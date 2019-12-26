@@ -3,13 +3,19 @@ id: code-first
 title: Code-first
 ---
 
-The code-first schema approach lets you built your GraphQL schema with .NET types and gives you all the goodness of strong types. Moreover, there is no need to switch to the GraphQL syntax in order to specify your schema, you can do everything in your favourite .NET language.
+The code-first schema approach lets us built GraphQL schemas with .NET types and it gives us all the goodness of strong types and the confidence of using the C# compiler to validate our code. There is no need to switch to the GraphQL syntax in order to specify our schema, we can do everything in our favorite .NET language.
 
-OK, let us get started and walk you through some examples in order to show the various approaches to define a schema.
+Let us get started and have a look at the various approaches that we can use to build a schema. It is important to know that you can mix the various approaches with _Hot Chocolate_ and use the best solution for your problem.
 
-First we will look at how you can write plain .NET objects that can be used to infer GraphQL schema types.
+## Pure Code-First
 
-Define a new plain C# class called Query:
+We call the first approach pure code-first since we do not bother about GraphQL schema types, we will just write clean C# code that automatically translates to GraphQL types.
+
+> In order to use this approach in the most effective way opt into C# nullable reference types.
+
+In GraphQL everything starts with one of the three root types (Query, Mutation or Subscriptions). Root types represent the operations that we can do on our schema.
+
+So, if we wanted to create the query root type we would simply write a `Query` class.
 
 ```csharp
 public class Query
@@ -18,7 +24,7 @@ public class Query
 }
 ```
 
-Now let us create a new schema that uses this type and infers from it the GraphQL query type.
+Now let us create a new schema with that root type.
 
 ```csharp
 var schema = SchemaBuilder.New()
@@ -26,19 +32,46 @@ var schema = SchemaBuilder.New()
   .Create();
 ```
 
-We now have registered an object type with our new schema that is based on our Query class. The schema would look like the following:
+We now have registered an object type with our new schema that is based on our `Query` class. The schema would look like the following (if nullable reference type are turned on):
 
 ```graphql
 type Query {
-  hello: String
+  hello: String!
 }
 ```
 
-We didn't even have to write resolvers due to the fact that the schema inferred those from the hello function. Our hello function is basically our resolver.
+We didn't even have to write resolvers due to the fact that the schema inferred those from the hello method. Our hello method is actually our resolver.
 
-If you want to opt into more GraphQL features that cannot be inferred from a .NET type, you can either use our schema types or use attributes.
+This is just a simple class, with no real challenge to it. The schema builder is able to automatically infer interface usage, arguments, really everything just form your types.
 
-So, if we wanted the return type of our `hello` field to be a non-null string than we could configure the schema like this:
+But what if we wanted to apply middleware to our types like paging, filtering or sorting?
+
+For this we have something called _descriptor attributes_ so applying filtering to a field would look like the following example:
+
+```csharp
+public class Query
+{
+    [UseFiltering]
+    public IQueryable<Foo> GetFoos()
+    {
+        ...
+    }
+}
+```
+
+This attribute would add all the necessary filter input types and apply the filter middleware to that field.
+
+If you want to read more about how to use or build these attributes head over [here](descriptor-attributes.md).
+
+## code-first
+
+The second and original approach to code-first is by using our schema types.
+
+Schema types allow us to keep the GraphQL type configuration separate from our .NET types. This can be the right approach when you do not want any _Hot Chocolate_ attributes on your business objects.
+
+As I said earlier you can mix these approaches which can enable you to achieve awesome complex schemas with minimal boiler plate code.
+
+Schema types can be created either by using the schema builder and add the configuration where you add the type.
 
 ```csharp
 var schema = SchemaBuilder.New()
@@ -48,7 +81,7 @@ var schema = SchemaBuilder.New()
     .Create();
 ```
 
-Since these fluent chains could get very long you can also opt to declare a new class `QueryType` that extends `ObjectType<Query>` and add this to your schema.
+Or, since these fluent chains could get very long and unreadable we can also opt to declare a new class `QueryType` that extends `ObjectType<Query>` and add it to our schema like the following.
 
 ```csharp
 public class QueryType : ObjectType<Query>
@@ -101,7 +134,7 @@ public class Query
 
 ```graphql
 type Query {
-  hello(name: String): String
+  hello(name: String!): String!
 }
 ```
 
@@ -115,14 +148,16 @@ public class Query
 }
 ```
 
-This was just a quick introduction - There is a lot more that you can do with code-first! In order to learn more, head over to the following documentation articles:
+This was just a quick introduction - There is a lot more that you can do with _pure code-first_ and _code-first_! In order to learn more, head over to the following documentation articles:
 
 - If you want to read more about the `SchemaBuilder` head over [here](schema.md).
 
 - If you are interested about resolvers in more detail [this](resolvers.md) might be the right place for you.
 
+- If you want to know how to split up types then [this](splitting-types.md) might be what you are looking for. 
+
 You are all fired up and want to get started with a little tutorial walking you through an end-to-end example with `MongoDB` as your database? [Follow me](tutorial-mongo.md)!
 
-OK, OK, you already have an idea on what to do and you are just looking for way to setup this whole thing with ASP.NET Core or ASP.NET Framework? [This](aspnet.md) is where you find more on that.
+OK, OK, you already have an idea on what to do and you are just looking for a way to setup this whole thing with ASP.NET Core? [This](aspnet.md) is where you find more on that.
 
-If you want to set _Hot Chocolate_ up with AWS Lambda or Azure Functions head over to our slack channel, we do not yet have documentation on that but an example project showing how to. We are constantly adding to our documentation and will include documentation on that soon.
+If you want to set _Hot Chocolate_ up with AWS Lambda or Azure Functions head over to our slack channel, we do not yet have documentation on that but there are example projects showing how to do that. We are constantly adding to our documentation and will include documentation on that soon.
