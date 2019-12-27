@@ -87,7 +87,7 @@ The first variant to batch is on request base, you basically send in an array of
         # The name of the operation that shall be executed.
         "operationName": "getHero",
 
-        # A key under which a query document was safed on the server.
+        # A key under which a query document was saved on the server.
         "id": "W5vrrAIypCbniaIYeroNnw==",
 
         # The variable values for this request.
@@ -109,7 +109,7 @@ The first variant to batch is on request base, you basically send in an array of
         # The name of the operation that shall be executed.
         "operationName": "getHero",
 
-        # A key under which a query document was safed on the server.
+        # A key under which a query document was saved on the server.
         "id": "W5vrrAIypCbniaIYeroNnw==",
 
         # The variable values for this request.
@@ -139,7 +139,7 @@ The second variant is called operation batching where you send in one request wi
     # The name of the operation that shall be executed.
     "operationName": "getHero",
 
-    # A key under which a query document was safed on the server.
+    # A key under which a query document was saved on the server.
     "id": "W5vrrAIypCbniaIYeroNnw==",
 
     # The variable values for this request.

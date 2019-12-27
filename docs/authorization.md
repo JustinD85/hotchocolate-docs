@@ -5,7 +5,12 @@ title: Authorization
 
 ## Authentication
 
-GraphQL as defined by the spec does not specify how a user has to authenticate against a schema in order to execute queries and retrieve data. Authentication in ASP.NET core and ASP.NET classic is a solved problem domain. So, there are several ways to provide authentication support to an ASP.NET API.
+GraphQL as defined by the spec does not specify how a user has to authenticate against a schema in order to execute queries. GraphQL does not event specify the HTTP transport. Facebook specified GraphQL as transport agnostic, meaning GraphQL really does not care other concepts like how the transport might work, how we authenticate or how a schema implements authorization. These subjects are considered out of scope.
+
+If we are accessing GraphQL servers through HTTP then authenticating against a GraphQL server can be done in various ways and _Hot Chocolate_ does not prescribe anything.
+
+So, for auth
+You basically can do it in any way ASP.NET core i and ASP.NET classic is a solved problem domain. So, there are several ways to provide authentication support to an ASP.NET API.
 
 So, in order to opt-in one of those solutions just add an authentication middleware to your server and your API is protected.
 
@@ -13,7 +18,7 @@ So, in order to opt-in one of those solutions just add an authentication middlew
 
 Authorization on the other hand is something Hot Chocolate can provide some value to by introducing an `@authorize`-directive.
 
-The `@authorize`-directive basically is our `AuthorizeAttribute`. You can annotate this directive to `ObjectType`s or field definitions in order to add authorization behaviour to them.
+The `@authorize`-directive basically is our `AuthorizeAttribute`. You can annotate this directive to `ObjectType`s or field definitions in order to add authorization behavior to them.
 
 But let's start at the beginning with this. In order to add authorization capabilities to your schema add the following package to your project:
 

@@ -5,10 +5,10 @@ title: Apollo Tracing
 
 _Apollo Tracing_ is a [performance tracing specification] for _GraphQL_ servers.
 It's not part of the actual _GraphQL_ [specification] itself, but there is a
-common aggrement in the _GraphQL_ community that this should be supported by
+common agreement in the _GraphQL_ community that this should be supported by
 all _GraphQL_ servers.
 
-## Enabeling Apollo Tracing
+## Enabling Apollo Tracing
 
 Due to built-in _Apollo Tracing_ support it's actually very simple to enable
 this feature. There is an option named `TracingPreference` which takes one of
