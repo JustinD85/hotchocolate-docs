@@ -113,7 +113,7 @@ public class QueryType
 }
 ```
 
-The above example declares a schema type named `QueryType` with one field called `greetings` of the type `String` that always returns `foo`. Like with the schema-first approach we can create types that are not explicitly bound to a specific .NET type like in the above example.
+The above example declares a schema type named `Query` with one field called `greetings` of the type `String` that always returns `foo`. Like with the schema-first approach we can create types that are not explicitly bound to a specific .NET type like in the above example.
 
 ```csharp
 public class PersonType
